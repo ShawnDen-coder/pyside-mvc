@@ -13,7 +13,6 @@ from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QFormLayout, QLineEdit
 
 
-
 class NodeEditor(QWidget):
     def __init__(self, parent=None):
         super(NodeEditor, self).__init__(parent)
@@ -51,4 +50,3 @@ class NodeEditor(QWidget):
         self.typeInfo_edit.setReadOnly(True)
         fLayout.addRow('Name', self.name_edit)
         fLayout.addRow('Type Info', self.typeInfo_edit)
-

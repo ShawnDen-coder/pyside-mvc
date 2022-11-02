@@ -15,6 +15,7 @@ from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QHBoxLayout, QFormLayo
 
 from class2.Views import LineWidth, LineHeight
 
+
 class CameraEditor(QWidget):
     def __init__(self, parent=None):
         super(CameraEditor, self).__init__(parent)

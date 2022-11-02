@@ -105,12 +105,14 @@ class SceneGraphModel(QAbstractItemModel):
         :param role:
         :return:
         """
+
         if index.isValid():
             node = index.internalPointer()
             typeInfo = node.typeInfo
             print(typeInfo)
             if role == Qt.EditRole:
                 if index.column() == 0:
+
                     node.name = value
 
             if typeInfo == "CAMERA":

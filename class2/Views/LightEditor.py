@@ -14,6 +14,7 @@ from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QFormLayout, QCheckBox
 
 from class2.Views import LineWidth, LineHeight
 
+
 class LightEditor(QWidget):
     def __init__(self, parent=None):
         super(LightEditor, self).__init__(parent)

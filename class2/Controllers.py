@@ -12,7 +12,7 @@
 
 
 from PySide2.QtCore import Qt, QSortFilterProxyModel
-from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QFormLayout, QLineEdit, QSizePolicy, QGroupBox, QVBoxLayout, \
+from PySide2.QtWidgets import QWidget, QLineEdit, QVBoxLayout, \
     QTreeView, QScrollArea, QFrame
 
 from class2.Data import TransformNode, Node, LightNode, CameraNode

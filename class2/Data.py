@@ -19,6 +19,7 @@ class Node:
 
         if parent is not None:
             parent.addChild(self)
+
     @property
     def typeInfo(self):
         return "Node"
@@ -39,9 +40,11 @@ class Node:
         child = self._children.pop(position)
         child._parent = None
         return True
+
     @property
     def name(self):
         return self._name
+
     @name.setter
     def name(self, name):
         self._name = name
