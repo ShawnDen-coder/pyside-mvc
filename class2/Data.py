@@ -9,6 +9,8 @@
 @Version : 0.0.0
 # @Software : PyCharm
 """
+
+
 class Node:
     def __init__(self, name, parent=None):
         self._name = name
@@ -17,7 +19,7 @@ class Node:
 
         if parent is not None:
             parent.addChild(self)
-
+    @property
     def typeInfo(self):
         return "Node"
 
@@ -37,11 +39,11 @@ class Node:
         child = self._children.pop(position)
         child._parent = None
         return True
-
+    @property
     def name(self):
         return self._name
-
-    def setName(self, name):
+    @name.setter
+    def name(self, name):
         self._name = name
 
     def child(self, row):
@@ -108,6 +110,7 @@ class TransformNode(Node):
     def z(self, value):
         self._z = value
 
+    @property
     def typeInfo(self):
         return "TRANSFORM"
 
@@ -134,6 +137,7 @@ class CameraNode(Node):
     def shakeIntensity(self, value):
         self._shakeIntensity = value
 
+    @property
     def typeInfo(self):
         return "CAMERA"
 
@@ -179,5 +183,6 @@ class LightNode(Node):
     def castShadows(self, value):
         self._castShadows = value
 
+    @property
     def typeInfo(self):
         return "LIGHT"

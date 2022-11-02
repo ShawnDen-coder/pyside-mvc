@@ -52,13 +52,13 @@ class SceneGraphModel(QAbstractItemModel):
             return None
 
         node = index.internalPointer()
-        typeInfo = node.typeInfo()
+        typeInfo = node.typeInfo
 
         if role == Qt.DisplayRole or role == Qt.EditRole:
             if index.column() == 0:
-                return node.name()
+                return node.name
             if index.column() == 1:
-                return node.typeInfo()
+                return node.typeInfo
             if typeInfo == "CAMERA":
                 if index.column() == 2:
                     return node.motionBlur
@@ -92,10 +92,10 @@ class SceneGraphModel(QAbstractItemModel):
                     return QIcon('Resources/三维对象.png')
 
         if role == SceneGraphModel.sortRole:
-            return node.typeInfo()
+            return node.typeInfo
 
         if role == SceneGraphModel.filterRole:
-            return node.typeInfo()
+            return node.typeInfo
 
     def setData(self, index, value, role=Qt.EditRole):
         """
@@ -107,11 +107,11 @@ class SceneGraphModel(QAbstractItemModel):
         """
         if index.isValid():
             node = index.internalPointer()
-            typeInfo = node.typeInfo()
+            typeInfo = node.typeInfo
             print(typeInfo)
             if role == Qt.EditRole:
                 if index.column() == 0:
-                    node.setName(value)
+                    node.name = value
 
             if typeInfo == "CAMERA":
                 if index.column() == 2:

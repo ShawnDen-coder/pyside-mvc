@@ -9,8 +9,7 @@
 @Version : 0.0.0
 # @Software : PyCharm
 """
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QFormLayout, QLineEdit, QSizePolicy, QGroupBox, QVBoxLayout
+from PySide2.QtWidgets import QWidget, QSizePolicy, QGroupBox, QVBoxLayout
 
 from class2.Views.CameraEditor import CameraEditor
 from class2.Views.LightEditor import LightEditor
@@ -70,7 +69,7 @@ class PropertiesEditor(QWidget):
         current = self._proxyModel.mapToSource(current)
         node = current.internalPointer()
         if node is not None:
-            typeInfo = node.typeInfo()
+            typeInfo = node.typeInfo
 
         if typeInfo == "CAMERA":
             self._lightEditor.setVisible(False)
