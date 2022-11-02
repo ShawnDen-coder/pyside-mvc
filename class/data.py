@@ -136,7 +136,7 @@ class CameraNode(Node):
         self._motionBlur = value
 
     @shakeIntensity.setter
-    def motionBlur(self, value):
+    def shakeIntensity(self, value):
         self._shakeIntensity = value
 
     def typeInfo(self):
