@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    :  mvc-2.py
+@File    :  data.py
 @Time    :  2022/10/31 10:44 AM
 @Author  :  ShawnDeng
 @Contact :  88145482@qq.com
@@ -9,13 +9,9 @@
 @Version : 0.0.0
 # @Software : PyCharm
 """
-import sys
 
-import PySide2
-import typing
-from PySide2.QtCore import QAbstractListModel, QModelIndex, QAbstractTableModel, QAbstractItemModel, QSortFilterProxyModel
-from PySide2.QtGui import QColor, Qt, QPixmap, QIcon
-from PySide2.QtWidgets import QListView, QApplication, QComboBox, QTreeView, QTableView, QWidget, QVBoxLayout, QLineEdit
+from PySide2.QtCore import QModelIndex, QAbstractItemModel
+from PySide2.QtGui import Qt, QIcon
 
 
 class Node:
@@ -89,9 +85,33 @@ class Node:
 class TransformNode(Node):
     def __init__(self, name, parent=None):
         super(TransformNode, self).__init__(name, parent)
-        self._name = name
-        self._children = []
-        self._parent = parent
+        self._x = 0
+        self._y = 0
+        self._z = 0
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
+
+    @property
+    def z(self):
+        return self._z
+
+    @x.setter
+    def x(self, value):
+        self._x = value
+
+    @y.setter
+    def y(self, value):
+        self._y = value
+
+    @z.setter
+    def z(self, value):
+        self._z = value
 
     def typeInfo(self):
         return "TRANSFORM"
@@ -100,9 +120,24 @@ class TransformNode(Node):
 class CameraNode(Node):
     def __init__(self, name, parent=None):
         super(CameraNode, self).__init__(name, parent)
-        self._name = name
-        self._children = []
-        self._parent = parent
+        self._motionBlur = True
+        self._shakeIntensity = 50.0
+
+    @property
+    def motionBlur(self):
+        return self._motionBlur
+
+    @property
+    def shakeIntensity(self):
+        return self._shakeIntensity
+
+    @motionBlur.setter
+    def motionBlur(self, value):
+        self._motionBlur = value
+
+    @shakeIntensity.setter
+    def motionBlur(self, value):
+        self._shakeIntensity = value
 
     def typeInfo(self):
         return "CAMERA"
@@ -111,9 +146,43 @@ class CameraNode(Node):
 class LightNode(Node):
     def __init__(self, name, parent=None):
         super(LightNode, self).__init__(name, parent)
-        self._name = name
-        self._children = []
-        self._parent = parent
+
+        self._lightIntensity = 1.0
+        self._nearRange = 40.0
+        self._farRange = 80.0
+        self._castShadows = True
+
+    @property
+    def lightIntensity(self):
+        return self._lightIntensity
+
+    @property
+    def nearRange(self):
+        return self._nearRange
+
+    @property
+    def farRange(self):
+        return self._farRange
+
+    @property
+    def castShadows(self):
+        return self._castShadows
+
+    @lightIntensity.setter
+    def lightIntensity(self, value):
+        self._lightIntensity = value
+
+    @nearRange.setter
+    def nearRange(self, value):
+        self._nearRange = value
+
+    @farRange.setter
+    def farRange(self, value):
+        self._farRange = value
+
+    @castShadows.setter
+    def castShadows(self, value):
+        self._castShadows = value
 
     def typeInfo(self):
         return "LIGHT"
@@ -158,30 +227,50 @@ class SceneGraphModel(QAbstractItemModel):
             return None
 
         node = index.internalPointer()
+        typeInfo = node.typeInfo()
 
         if role == Qt.DisplayRole or role == Qt.EditRole:
             if index.column() == 0:
                 return node.name()
             if index.column() == 1:
                 return node.typeInfo()
+            if typeInfo == "CAMERA":
+                if index.column() == 2:
+                    return node.motionBlur
+                if index.column() == 3:
+                    return node.shakeIntensity
+            if typeInfo == "LIGHT":
+                if index.column() == 2:
+                    return node.lightIntensity
+                if index.column() == 3:
+                    return node.nearRange
+                if index.column() == 4:
+                    return node.farRange
+                if index.column() == 5:
+                    return node.castRange
+
+            if typeInfo == "TRANSFORM":
+                if index.column() == 2:
+                    return node.x
+                if index.column() == 3:
+                    return node.y
+                if index.column() == 4:
+                    return node.z
 
         if role == Qt.DecorationRole:
             if index.column() == 0:
-                typeInfo = node.typeInfo()
                 if typeInfo == "LIGHT":
-                    return QIcon('Icon/三维分析.png')
+                    return QIcon('../Icon/三维分析.png')
                 if typeInfo == "CAMERA":
-                    return QIcon('Icon/三维坐标.png')
+                    return QIcon('../Icon/三维坐标.png')
                 if typeInfo == "TRANSFORM":
-                    return QIcon('Icon/三维对象.png')
+                    return QIcon('../Icon/三维对象.png')
 
         if role == SceneGraphModel.sortRole:
             return node.typeInfo()
 
         if role == SceneGraphModel.filterRole:
             return node.typeInfo()
-
-
 
     def setData(self, index, value, role=Qt.EditRole):
         """
@@ -192,10 +281,38 @@ class SceneGraphModel(QAbstractItemModel):
         :return:
         """
         if index.isValid():
+            node = index.internalPointer()
+            typeInfo = node.typeInfo()
+            print(typeInfo)
             if role == Qt.EditRole:
-                node = index.internalPointer()
-                node.setName(value)
-                return True
+                if index.column() == 0:
+                    node.setName(value)
+
+            if typeInfo == "CAMERA":
+                if index.column() == 2:
+                    node.motionBlur = value
+                if index.column() == 3:
+                    node.shakeIntensity = value
+            if typeInfo == "LIGHT":
+                if index.column() == 2:
+                    node.lightIntensity = value
+                if index.column() == 3:
+                    node.nearRange = value
+                if index.column() == 4:
+                    node.farRange = value
+                if index.column() == 5:
+                    node.castRange = value
+
+            if typeInfo == "TRANSFORM":
+                if index.column() == 2:
+                    node.x = value
+                if index.column() == 3:
+                    node.y = value
+                if index.column() == 4:
+                    node.z = value
+
+            self.dataChanged.emit(index, index)
+            return True
         else:
             return False
 
@@ -293,62 +410,5 @@ class SceneGraphModel(QAbstractItemModel):
         return success
 
 
-# -------------------------< UI >------------------------- #
-class uiMainWindow(QWidget):
-    def __init__(self):
-        super(uiMainWindow, self).__init__()
-        self.resize(400, 500)
-        self.initUI()
-
-        # -------------------------< data >------------------------- #
-        rootNode = Node("Hips")
-        childNode0 =TransformNode('a',rootNode)
-        childNode1 =LightNode('b',rootNode)
-        childNode2 =CameraNode('c',rootNode)
-        childNode3 =TransformNode('d',rootNode)
-        childNode4 =LightNode('e',rootNode)
-        childNode5 =CameraNode('f',rootNode)
-        childNode3 =TransformNode('g',rootNode)
-        childNode4 =LightNode('h',rootNode)
-        childNode5 =CameraNode('i',rootNode)
-
-        # -------------------------< proxy modle >------------------------- #
-        self._proxyModel = QSortFilterProxyModel()
-        """ View <----> proxyModel <----> Data model"""
-        self.model = SceneGraphModel(rootNode)
-        # self.model.insertLightRows(0, 10)
-
-        self._proxyModel.setSourceModel(self.model)
-        # 设置排序
-        self.uiTree.setSortingEnabled(True)
-        # 动态排序
-        self._proxyModel.setDynamicSortFilter(True)
-        # 不区分大小写
-        self._proxyModel.setFilterCaseSensitivity(Qt.CaseInsensitive)
-
-        # 设置自定义的filter和sort
-        self._proxyModel.setSortRole(SceneGraphModel.sortRole)
-        self._proxyModel.setFilterRole(SceneGraphModel.filterRole)
-
-        self._proxyModel.setFilterKeyColumn(0)
-
-
-        self.uiTree.setModel(self._proxyModel)
-        # 获取输入的filter text
-        self.uiFilter.textChanged.connect(
-            lambda text: self._proxyModel.setFilterRegExp(text))
-
-    def initUI(self):
-        vLayout = QVBoxLayout()
-        self.setLayout(vLayout)
-        self.uiFilter = QLineEdit(self)
-        self.uiTree = QTreeView(self)
-        vLayout.addWidget(self.uiFilter)
-        vLayout.addWidget(self.uiTree)
-
-
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    win = uiMainWindow()
-    win.show()
-    sys.exit(app.exec_())
+    pass
