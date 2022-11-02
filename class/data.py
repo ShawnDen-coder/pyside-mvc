@@ -247,7 +247,7 @@ class SceneGraphModel(QAbstractItemModel):
                 if index.column() == 4:
                     return node.farRange
                 if index.column() == 5:
-                    return node.castRange
+                    return node.castShadows
 
             if typeInfo == "TRANSFORM":
                 if index.column() == 2:
@@ -301,7 +301,7 @@ class SceneGraphModel(QAbstractItemModel):
                 if index.column() == 4:
                     node.farRange = value
                 if index.column() == 5:
-                    node.castRange = value
+                    node.castShadows = value
 
             if typeInfo == "TRANSFORM":
                 if index.column() == 2:
