@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    :  TransformEditor.py
+@File    :  TransformUI.py
 @Time    :  2022/11/2 6:04 PM
 @Author  :  ShawnDeng
 @Contact :  88145482@qq.com
@@ -10,37 +10,15 @@
 # @Software : PyCharm
 """
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QHBoxLayout, QFormLayout, QDoubleSpinBox
+from PySide2.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QDoubleSpinBox
 
 from class2.Views import LineWidth, LineHeight
 
 
-class TransformEditor(QWidget):
+class TransformUI(QWidget):
     def __init__(self, parent=None):
-        super(TransformEditor, self).__init__(parent)
+        super(TransformUI, self).__init__(parent)
         self.nodeInfoUI()
-
-        # -------------------------< data mapper >------------------------- #
-        self._dataMapper = QDataWidgetMapper()
-
-    def setModel(self, proxyModel):
-        self._proxyModel = proxyModel
-        self._dataMapper.setModel(proxyModel.sourceModel())
-        self._dataMapper.addMapping(self.positionX_edit, 2)
-        self._dataMapper.addMapping(self.positionY_edit, 3)
-        self._dataMapper.addMapping(self.positionZ_edit, 4)
-        # self._dataMapper.toFirst()
-
-    def setSelection(self, current):
-        """
-        :param current: QModelIndex
-        :param old: QModelIndex
-        :return:
-        """
-        parent = current.parent()
-        self._dataMapper.setRootIndex(parent)
-
-        self._dataMapper.setCurrentModelIndex(current)
 
     def nodeInfoUI(self):
         fLayout = QFormLayout()

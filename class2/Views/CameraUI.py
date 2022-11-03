@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    :  CameraEditor.py
+@File    :  CameraUI.py
 @Time    :  2022/11/2 6:04 PM
 @Author  :  ShawnDeng
 @Contact :  88145482@qq.com
@@ -11,36 +11,15 @@
 """
 
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QHBoxLayout, QFormLayout, QDoubleSpinBox, QCheckBox
+from PySide2.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QDoubleSpinBox, QCheckBox
 
 from class2.Views import LineWidth, LineHeight
 
 
-class CameraEditor(QWidget):
+class CameraUI(QWidget):
     def __init__(self, parent=None):
-        super(CameraEditor, self).__init__(parent)
+        super(CameraUI, self).__init__(parent)
         self.nodeInfoUI()
-
-        # -------------------------< data mapper >------------------------- #
-        self._dataMapper = QDataWidgetMapper()
-
-    def setModel(self, proxyModel):
-        self._proxyModel = proxyModel
-        self._dataMapper.setModel(proxyModel.sourceModel())
-        self._dataMapper.addMapping(self.motionBlur_edit, 2)
-        self._dataMapper.addMapping(self.shakeInternsity_edit, 3)
-        # self._dataMapper.toFirst()
-
-    def setSelection(self, current):
-        """
-        :param current: QModelIndex
-        :param old: QModelIndex
-        :return:
-        """
-        parent = current.parent()
-        self._dataMapper.setRootIndex(parent)
-
-        self._dataMapper.setCurrentModelIndex(current)
 
     def nodeInfoUI(self):
         fLayout = QFormLayout()

@@ -12,6 +12,8 @@
 from PySide2.QtCore import QAbstractItemModel, Qt, QModelIndex
 from PySide2.QtGui import QIcon
 
+from class2.Data import LightNode, Node
+
 
 class SceneGraphModel(QAbstractItemModel):
     sortRole = Qt.UserRole

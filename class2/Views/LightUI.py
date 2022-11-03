@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@File    :  LightEditor.py
+@File    :  LightUI.py
 @Time    :  2022/11/2 6:04 PM
 @Author  :  ShawnDeng
 @Contact :  88145482@qq.com
@@ -10,38 +10,15 @@
 # @Software : PyCharm
 """
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QDataWidgetMapper, QFormLayout, QCheckBox, QSpinBox
+from PySide2.QtWidgets import QWidget, QFormLayout, QCheckBox, QSpinBox
 
 from class2.Views import LineWidth, LineHeight
 
 
-class LightEditor(QWidget):
+class LightUI(QWidget):
     def __init__(self, parent=None):
-        super(LightEditor, self).__init__(parent)
+        super(LightUI, self).__init__(parent)
         self.nodeInfoUI()
-
-        # -------------------------< data mapper >------------------------- #
-        self._dataMapper = QDataWidgetMapper()
-
-    def setModel(self, proxyModel):
-        self._proxyModel = proxyModel
-        self._dataMapper.setModel(proxyModel.sourceModel())
-        self._dataMapper.addMapping(self.lightInternsity_edit, 2)
-        self._dataMapper.addMapping(self.nearRange_edit, 3)
-        self._dataMapper.addMapping(self.farRange_edit, 4)
-        self._dataMapper.addMapping(self.castShadows_edit, 5)
-        # self._dataMapper.toFirst()
-
-    def setSelection(self, current):
-        """
-        :param current: QModelIndex
-        :param old: QModelIndex
-        :return:
-        """
-        parent = current.parent()
-        self._dataMapper.setRootIndex(parent)
-
-        self._dataMapper.setCurrentModelIndex(current)
 
     def nodeInfoUI(self):
         fLayout = QFormLayout()
