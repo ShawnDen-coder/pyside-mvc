@@ -15,12 +15,12 @@ from PySide2 import QtXml
 
 @unique
 class LIGHT_SHAPES(Enum):
-    Poiont = 1
-    Spot = 2
-    Directional =3
-    Area = 4
-    Volumetric = 5
-    End = 6
+    Poiont = 0
+    Spot = 1
+    Directional =2
+    Area = 3
+    Volumetric = 4
+    End = 5
 
 
 class Node:
@@ -320,7 +320,6 @@ class LightNode(Node):
     def setData(self, column, value):
         super(LightNode, self).setData(column, value)
         print(column,value)
-
         if column is 2:
             self.lightIntensity = value
         elif column is 3:
@@ -330,8 +329,8 @@ class LightNode(Node):
         elif column is 5:
             self.castShadows = value
         elif column is 6:
-            self._shape = LIGHT_SHAPES[value].name
-            print(self._shape)
+            print(LIGHT_SHAPES(value).name)
+            self._shape = LIGHT_SHAPES(value).name
 
     @property
     def resource(self):

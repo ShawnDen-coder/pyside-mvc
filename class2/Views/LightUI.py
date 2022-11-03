@@ -36,7 +36,9 @@ class LightUI(QWidget):
         self.farRange_edit.setMinimumWidth(LineWidth + 30)
         self.farRange_edit.setMinimumHeight(LineHeight)
         self.castShadows_edit = QCheckBox(self)
+        self.castShadows_edit.setFocusPolicy(Qt.StrongFocus)
         self.uiShape = QComboBox(self)
+        self.uiShape.setFocusPolicy(Qt.StrongFocus)
 
         fLayout.addRow('Light Internsity', self.lightInternsity_edit)
         fLayout.addRow('Near Range', self.nearRange_edit)

@@ -92,8 +92,7 @@ class LightEditor(LightUI):
         self._dataMapper.addMapping(self.nearRange_edit, 3)
         self._dataMapper.addMapping(self.farRange_edit, 4)
         self._dataMapper.addMapping(self.castShadows_edit, 5)
-        self._dataMapper.addMapping(self.uiShape, 6)
-        print(self._dataMapper.mappedWidgetAt(6))
+        self._dataMapper.addMapping(self.uiShape, 6,b"currentIndex")
         # self._dataMapper.toFirst()
 
     def setSelection(self, current):
