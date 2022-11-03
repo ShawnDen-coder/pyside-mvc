@@ -9,11 +9,11 @@
 @Version : 0.0.0
 # @Software : PyCharm
 """
-
+import sys
 
 from PySide2.QtCore import Qt, QSortFilterProxyModel
 from PySide2.QtWidgets import QWidget, QLineEdit, QVBoxLayout, \
-    QTreeView, QScrollArea, QFrame, QDataWidgetMapper
+    QTreeView, QScrollArea, QFrame, QDataWidgetMapper, QApplication
 
 from class2.Data import TransformNode, Node, LightNode, CameraNode
 from class2.Models import SceneGraphModel
@@ -53,8 +53,6 @@ class NodeEditor(NodeUI):
 class CameraEditor(CameraUI):
     def __init__(self, parent=None):
         super(CameraEditor, self).__init__(parent)
-        self.nodeInfoUI()
-
         # -------------------------< data mapper >------------------------- #
         self._dataMapper = QDataWidgetMapper()
 
@@ -73,7 +71,6 @@ class CameraEditor(CameraUI):
         """
         parent = current.parent()
         self._dataMapper.setRootIndex(parent)
-
         self._dataMapper.setCurrentModelIndex(current)
 
 
@@ -265,3 +262,9 @@ class uiMainWindow(QWidget):
         self._propEditor.setModel(self._proxyModel)
         self.uiTree.selectionModel().currentChanged.connect(
             lambda index1, index2: self._propEditor.setSelection(index1, index2))
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ui = CameraEditor()
+    ui.show()
+    sys.exit(app.exec_())

@@ -9,10 +9,13 @@
 @Version : 0.0.0
 # @Software : PyCharm
 """
+import sys
+
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QDoubleSpinBox
+from PySide2.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QDoubleSpinBox, QApplication
 
 from class2.Views import LineWidth, LineHeight
+from class2.Views.CameraUI import CameraUI
 
 
 class TransformUI(QWidget):
@@ -44,3 +47,10 @@ class TransformUI(QWidget):
         positionLayout.addWidget(self.positionZ_edit)
 
         fLayout.addRow("Position", positionLayout)
+
+if __name__ == '__main__':
+
+    app = QApplication(sys.argv)
+    ui = TransformUI()
+    ui.show()
+    sys.exit(app.exec_())
