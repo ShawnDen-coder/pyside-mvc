@@ -10,7 +10,7 @@
 # @Software : PyCharm
 """
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QWidget, QFormLayout, QCheckBox, QSpinBox
+from PySide2.QtWidgets import QWidget, QFormLayout, QCheckBox, QSpinBox, QComboBox
 
 from class2.Views import LineWidth, LineHeight
 
@@ -36,8 +36,10 @@ class LightUI(QWidget):
         self.farRange_edit.setMinimumWidth(LineWidth + 30)
         self.farRange_edit.setMinimumHeight(LineHeight)
         self.castShadows_edit = QCheckBox(self)
+        self.uiShape = QComboBox(self)
 
         fLayout.addRow('Light Internsity', self.lightInternsity_edit)
         fLayout.addRow('Near Range', self.nearRange_edit)
         fLayout.addRow('Far Range', self.farRange_edit)
         fLayout.addRow("Cast Shadows", self.castShadows_edit)
+        fLayout.addRow("Shape", self.uiShape)

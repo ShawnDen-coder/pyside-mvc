@@ -1,0 +1,30 @@
+<Node>
+ <TRANSFORM z="0" y="0" name="sgdsg" typeInfo="Node" x="0" resource="Resources/三维对象.png"/>
+ <LIGHT castShadows="1" name="b" farRange="80" typeInfo="Node" resource="Resources/三维分析.png" lightIntensity="1" nearRange="40"/>
+ <CAMERA shakeIntensity="50" motionBlur="1" name="c" typeInfo="Node" resource="Resources/三维坐标.png"/>
+ <TRANSFORM z="0" y="0" name="d" typeInfo="Node" x="0" resource="Resources/三维对象.png"/>
+ <LIGHT castShadows="1" name="e" farRange="80" typeInfo="Node" resource="Resources/三维分析.png" lightIntensity="1" nearRange="40"/>
+ <CAMERA shakeIntensity="50" motionBlur="1" name="f" typeInfo="Node" resource="Resources/三维坐标.png">
+  <TRANSFORM z="0" y="0" name="g" typeInfo="Node" x="0" resource="Resources/三维对象.png">
+   <LIGHT castShadows="1" name="h" farRange="80" typeInfo="Node" resource="Resources/三维分析.png" lightIntensity="1" nearRange="40">
+    <CAMERA shakeIntensity="50" motionBlur="1" name="i" typeInfo="Node" resource="Resources/三维坐标.png"/>
+   </LIGHT>
+  </TRANSFORM>
+ </CAMERA>
+</Node>
+
+
+<Node>
+ <TRANSFORM z="0" x="0" resource="Resources/三维对象.png" y="0" name="sdfsf"/>
+ <LIGHT nearRange="40" castShadows="1" lightIntensity="1" farRange="80" resource="Resources/三维分析.png" name="b"/>
+ <CAMERA resource="Resources/三维坐标.png" name="c" motionBlur="1" shakeIntensity="50"/>
+ <TRANSFORM z="0" x="0" resource="Resources/三维对象.png" y="0" name="d"/>
+ <LIGHT nearRange="40" castShadows="1" lightIntensity="1" farRange="80" resource="Resources/三维分析.png" name="e"/>
+ <CAMERA resource="Resources/三维坐标.png" name="f" motionBlur="1" shakeIntensity="50">
+  <TRANSFORM z="0" x="0" resource="Resources/三维对象.png" y="0" name="g">
+   <LIGHT nearRange="40" castShadows="1" lightIntensity="1" farRange="80" resource="Resources/三维分析.png" name="h">
+    <CAMERA resource="Resources/三维坐标.png" name="i" motionBlur="1" shakeIntensity="50"/>
+   </LIGHT>
+  </TRANSFORM>
+ </CAMERA>
+</Node>

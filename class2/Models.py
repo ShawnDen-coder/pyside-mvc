@@ -54,44 +54,14 @@ class SceneGraphModel(QAbstractItemModel):
             return None
 
         node = index.internalPointer()
-        typeInfo = node.typeInfo
 
         if role == Qt.DisplayRole or role == Qt.EditRole:
-            if index.column() == 0:
-                return node.name
-            if index.column() == 1:
-                return node.typeInfo
-            if typeInfo == "CAMERA":
-                if index.column() == 2:
-                    return node.motionBlur
-                if index.column() == 3:
-                    return node.shakeIntensity
-            if typeInfo == "LIGHT":
-                if index.column() == 2:
-                    return node.lightIntensity
-                if index.column() == 3:
-                    return node.nearRange
-                if index.column() == 4:
-                    return node.farRange
-                if index.column() == 5:
-                    return node.castShadows
-
-            if typeInfo == "TRANSFORM":
-                if index.column() == 2:
-                    return node.x
-                if index.column() == 3:
-                    return node.y
-                if index.column() == 4:
-                    return node.z
+            return node.data(index.column())
 
         if role == Qt.DecorationRole:
             if index.column() == 0:
-                if typeInfo == "LIGHT":
-                    return QIcon('Resources/三维分析.png')
-                if typeInfo == "CAMERA":
-                    return QIcon('Resources/三维坐标.png')
-                if typeInfo == "TRANSFORM":
-                    return QIcon('Resources/三维对象.png')
+                resource = node.resource
+                return QIcon(QIcon(resource))
 
         if role == SceneGraphModel.sortRole:
             return node.typeInfo
@@ -110,40 +80,13 @@ class SceneGraphModel(QAbstractItemModel):
 
         if index.isValid():
             node = index.internalPointer()
-            typeInfo = node.typeInfo
-            print(typeInfo)
+
             if role == Qt.EditRole:
-                if index.column() == 0:
+                node.setData(index.column(), value)
+                self.dataChanged.emit(index, index)
+                return True
 
-                    node.name = value
-
-            if typeInfo == "CAMERA":
-                if index.column() == 2:
-                    node.motionBlur = value
-                if index.column() == 3:
-                    node.shakeIntensity = value
-            if typeInfo == "LIGHT":
-                if index.column() == 2:
-                    node.lightIntensity = value
-                if index.column() == 3:
-                    node.nearRange = value
-                if index.column() == 4:
-                    node.farRange = value
-                if index.column() == 5:
-                    node.castShadows = value
-
-            if typeInfo == "TRANSFORM":
-                if index.column() == 2:
-                    node.x = value
-                if index.column() == 3:
-                    node.y = value
-                if index.column() == 4:
-                    node.z = value
-
-            self.dataChanged.emit(index, index)
-            return True
-        else:
-            return False
+        return False
 
     def headerData(self, section, orientation, role):
         """

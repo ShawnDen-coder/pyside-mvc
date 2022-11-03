@@ -11,11 +11,11 @@
 """
 import sys
 
-from PySide2.QtCore import Qt, QSortFilterProxyModel
+from PySide2.QtCore import Qt, QSortFilterProxyModel, QByteArray
 from PySide2.QtWidgets import QWidget, QLineEdit, QVBoxLayout, \
-    QTreeView, QScrollArea, QFrame, QDataWidgetMapper, QApplication
+    QTreeView, QScrollArea, QFrame, QDataWidgetMapper, QApplication, QTextEdit
 
-from class2.Data import TransformNode, Node, LightNode, CameraNode
+from class2.Data import TransformNode, Node, LightNode, CameraNode,LIGHT_SHAPES
 from class2.Models import SceneGraphModel
 from class2.Views.CameraUI import CameraUI
 from class2.Views.LightUI import LightUI
@@ -77,8 +77,13 @@ class CameraEditor(CameraUI):
 class LightEditor(LightUI):
     def __init__(self, parent=None):
         super(LightEditor, self).__init__(parent)
+        for i in LIGHT_SHAPES:
+            if i.name != "End":
+                self.uiShape.addItem(i.name)
         # -------------------------< data mapper >------------------------- #
         self._dataMapper = QDataWidgetMapper()
+
+
 
     def setModel(self, proxyModel):
         self._proxyModel = proxyModel
@@ -87,6 +92,8 @@ class LightEditor(LightUI):
         self._dataMapper.addMapping(self.nearRange_edit, 3)
         self._dataMapper.addMapping(self.farRange_edit, 4)
         self._dataMapper.addMapping(self.castShadows_edit, 5)
+        self._dataMapper.addMapping(self.uiShape, 6)
+        print(self._dataMapper.mappedWidgetAt(6))
         # self._dataMapper.toFirst()
 
     def setSelection(self, current):
@@ -168,7 +175,7 @@ class PropertiesEditor(PropertiesUI):
         current = self._proxyModel.mapToSource(current)
         node = current.internalPointer()
         if node is not None:
-            typeInfo = node.typeInfo
+            typeInfo = node.typeInfo()
 
         if typeInfo == "CAMERA":
             self._lightEditor.setVisible(False)
@@ -197,24 +204,30 @@ class PropertiesEditor(PropertiesUI):
 
 
 class uiMainWindow(QWidget):
+    def updateXml(self):
+
+        xml = self._rootNode.asXml()
+        self.uiXml.setPlainText(xml)
+
+
     def __init__(self):
         super(uiMainWindow, self).__init__()
         self.resize(400, 500)
 
         # -------------------------< data >------------------------- #
-        rootNode = Node("Hips")
-        childNode0 = TransformNode('a', rootNode)
-        childNode1 = LightNode('b', rootNode)
-        childNode2 = CameraNode('c', rootNode)
-        childNode3 = TransformNode('d', rootNode)
-        childNode4 = LightNode('e', rootNode)
-        childNode5 = CameraNode('f', rootNode)
+        self._rootNode = Node("Hips")
+        childNode0 = TransformNode('a', self._rootNode)
+        childNode1 = LightNode('b', self._rootNode)
+        childNode2 = CameraNode('c', self._rootNode)
+        childNode3 = TransformNode('d', self._rootNode)
+        childNode4 = LightNode('e', self._rootNode)
+        childNode5 = CameraNode('f', self._rootNode)
         childNode6 = TransformNode('g', childNode5)
         childNode7 = LightNode('h', childNode6)
         childNode8 = CameraNode('i', childNode7)
 
         # -------------------------< proxy modle >------------------------- #
-        self._model = SceneGraphModel(rootNode)
+        self._model = SceneGraphModel(self._rootNode)
 
         # View <----> proxyModel <----> Data model
         self._proxyModel = QSortFilterProxyModel(self)
@@ -238,6 +251,7 @@ class uiMainWindow(QWidget):
     def initUI(self):
         self.vLayout = QVBoxLayout()
         self.setLayout(self.vLayout)
+        self.uiXml = QTextEdit(self)
         self.uiFilter = QLineEdit(self)
         self.uiTree = QTreeView(self)
 
@@ -248,8 +262,10 @@ class uiMainWindow(QWidget):
         self.uiFilter.textChanged.connect(
             lambda text: self._proxyModel.setFilterRegExp(text))
 
+        self.vLayout.addWidget(self.uiXml)
         self.vLayout.addWidget(self.uiFilter)
         self.vLayout.addWidget(self.uiTree)
+
 
         self.slider = QScrollArea()
         self.slider.setWidgetResizable(True)
@@ -262,6 +278,8 @@ class uiMainWindow(QWidget):
         self._propEditor.setModel(self._proxyModel)
         self.uiTree.selectionModel().currentChanged.connect(
             lambda index1, index2: self._propEditor.setSelection(index1, index2))
+
+        self._model.dataChanged.connect(lambda index1,index2:self.updateXml())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
